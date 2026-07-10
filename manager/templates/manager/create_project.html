@@ -1,0 +1,20 @@
+{% extends 'manager/base.html' %}
+{% block title %}Create Project | TaskFlow Pro{% endblock %}
+
+{% block content %}
+<section class="auth-wrap">
+    <div class="auth-card glass">
+        <div class="auth-header">
+            <span class="badge">New Project</span>
+            <h1>Create a Project</h1>
+            <p>Set up a new project space and start adding tasks.</p>
+        </div>
+
+        <form method="post" class="form-grid">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary btn-full">Create Project</button>
+        </form>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends 'manager/base.html' %}
+{% block title %}{{ project.title }} | TaskFlow Pro{% endblock %}
+
+{% block content %}
+<section class="panel glass">
+    <div class="section-head project-detail-head">
+        <div>
+            <p class="section-kicker">Project Overview</p>
+            <h1>{{ project.title }}</h1>
+            <p class="project-description">{{ project.description|default:"No description added." }}</p>
+        </div>
+        <a href="{% url 'create_task' project.id %}" class="btn btn-primary">+ Add Task</a>
+    </div>
+
+    <div class="stats-row">
+        <div class="status-box glass-card">
+            <h3>{{ todo_count }}</h3>
+            <p>To Do</p>
+        </div>
+        <div class="status-box glass-card">
+            <h3>{{ progress_count }}</h3>
+            <p>In Progress</p>
+        </div>
+        <div class="status-box glass-card">
+            <h3>{{ done_count }}</h3>
+            <p>Done</p>
+        </div>
+    </div>
+
+    <div class="task-list-wrap">
+        <div class="section-head small-head">
+            <h2>Tasks</h2>
+        </div>
+
+        {% if tasks %}
+            <div class="task-list">
+                {% for task in tasks %}
+                    <a href="{% url 'task_detail' task.id %}" class="task-item glass-card">
+                        <div>
+                            <h3>{{ task.title }}</h3>
+                            <p>{{ task.description|default:"No description"|truncatechars:100 }}</p>
+                        </div>
+
+                        <div class="task-badges">
+                            <span class="status-pill status-{{ task.status }}">{{ task.get_status_display }}</span>
+                            <span class="priority-pill priority-{{ task.priority }}">{{ task.get_priority_display }}</span>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-box glass-card">
+                <h3>No tasks in this project</h3>
+                <p>Create your first task to start managing work.</p>
+                <a href="{% url 'create_task' project.id %}" class="btn btn-primary">Create Task</a>
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

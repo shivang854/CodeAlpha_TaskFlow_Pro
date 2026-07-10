@@ -1,0 +1,118 @@
+{% extends 'manager/base.html' %}
+{% block title %}Home | TaskFlow Pro{% endblock %}
+
+{% block content %}
+<section class="hero glass">
+    <div class="hero-left">
+        <span class="badge">CodeAlpha Task 3</span>
+        <h1>Manage Projects, Tasks & Team Progress in one sleek workspace.</h1>
+        <p>
+            TaskFlow Pro is a modern project management tool where you can create projects,
+            add tasks, track status, and collaborate with comments — all in one beautiful dashboard.
+        </p>
+
+        <div class="hero-actions">
+            {% if user.is_authenticated %}
+                <a href="{% url 'project_list' %}" class="btn btn-primary">Open Dashboard</a>
+                <a href="{% url 'create_project' %}" class="btn btn-outline">Create Project</a>
+            {% else %}
+                <a href="{% url 'register' %}" class="btn btn-primary">Create Free Account</a>
+                <a href="{% url 'login' %}" class="btn btn-outline">Login</a>
+            {% endif %}
+        </div>
+
+        <div class="hero-stats">
+            <div class="stat-card">
+                <h3>Smart</h3>
+                <p>Project tracking</p>
+            </div>
+            <div class="stat-card">
+                <h3>Fast</h3>
+                <p>Task organization</p>
+            </div>
+            <div class="stat-card">
+                <h3>Clean</h3>
+                <p>3D modern UI</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="hero-right">
+        <div class="dashboard-preview glass-card">
+            <div class="preview-top">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+            </div>
+
+            <div class="preview-body">
+                <div class="preview-sidebar">
+                    <div class="side-pill active"></div>
+                    <div class="side-pill"></div>
+                    <div class="side-pill"></div>
+                    <div class="side-pill"></div>
+                </div>
+
+                <div class="preview-content">
+                    <div class="preview-box big"></div>
+                    <div class="preview-row">
+                        <div class="preview-box"></div>
+                        <div class="preview-box"></div>
+                    </div>
+                    <div class="preview-box long"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-grid">
+    <div class="feature-card glass">
+        <h3>Create Projects</h3>
+        <p>Organize your work into clean project spaces with titles, descriptions and ownership.</p>
+    </div>
+    <div class="feature-card glass">
+        <h3>Track Tasks</h3>
+        <p>Manage tasks with priority, due dates, status updates and detailed task pages.</p>
+    </div>
+    <div class="feature-card glass">
+        <h3>Collaborate</h3>
+        <p>Add comments inside tasks and keep project communication structured and easy to follow.</p>
+    </div>
+</section>
+
+{% if user.is_authenticated %}
+<section class="panel glass">
+    <div class="section-head">
+        <div>
+            <p class="section-kicker">Welcome back</p>
+            <h2>Your Recent Projects</h2>
+        </div>
+        <a href="{% url 'project_list' %}" class="btn btn-outline">View All</a>
+    </div>
+
+    {% if recent_projects %}
+        <div class="cards-grid">
+            {% for project in recent_projects %}
+                <a href="{% url 'project_detail' project.id %}" class="project-card glass-card">
+                    <div class="project-top">
+                        <h3>{{ project.title }}</h3>
+                        <span class="mini-badge">Project</span>
+                    </div>
+                    <p>{{ project.description|default:"No description added yet."|truncatechars:120 }}</p>
+                    <div class="project-meta">
+                        <span>Created: {{ project.created_at|date:"d M Y" }}</span>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-box glass-card">
+            <h3>No projects yet</h3>
+            <p>Create your first project and start building your workflow.</p>
+            <a href="{% url 'create_project' %}" class="btn btn-primary">Create Project</a>
+        </div>
+    {% endif %}
+</section>
+{% endif %}
+{% endblock %}

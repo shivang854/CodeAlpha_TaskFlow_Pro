@@ -1,0 +1,25 @@
+{% extends 'manager/base.html' %}
+{% block title %}Register | TaskFlow Pro{% endblock %}
+
+{% block content %}
+<section class="auth-wrap">
+    <div class="auth-card glass">
+        <div class="auth-header">
+            <span class="badge">Create account</span>
+            <h1>Join TaskFlow Pro</h1>
+            <p>Start managing projects and tasks with a clean, powerful workspace.</p>
+        </div>
+
+        <form method="post" class="form-grid">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary btn-full">Create Account</button>
+        </form>
+
+        <p class="auth-footer">
+            Already have an account?
+            <a href="{% url 'login' %}">Login</a>
+        </p>
+    </div>
+</section>
+{% endblock %}

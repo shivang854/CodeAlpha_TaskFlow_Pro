@@ -1,0 +1,70 @@
+{% extends 'manager/base.html' %}
+{% block title %}{{ task.title }} | TaskFlow Pro{% endblock %}
+
+{% block content %}
+<section class="panel glass">
+    <div class="section-head project-detail-head">
+        <div>
+            <p class="section-kicker">Task Detail</p>
+            <h1>{{ task.title }}</h1>
+            <p class="project-description">{{ task.description|default:"No description available." }}</p>
+        </div>
+        <a href="{% url 'edit_task' task.id %}" class="btn btn-primary">Edit Task</a>
+    </div>
+
+    <div class="task-detail-grid">
+        <div class="detail-card glass-card">
+            <h3>Status</h3>
+            <span class="status-pill status-{{ task.status }}">{{ task.get_status_display }}</span>
+        </div>
+
+        <div class="detail-card glass-card">
+            <h3>Priority</h3>
+            <span class="priority-pill priority-{{ task.priority }}">{{ task.get_priority_display }}</span>
+        </div>
+
+        <div class="detail-card glass-card">
+            <h3>Due Date</h3>
+            <p>{{ task.due_date|default:"Not set" }}</p>
+        </div>
+
+        <div class="detail-card glass-card">
+            <h3>Project</h3>
+            <p>{{ task.project.title }}</p>
+        </div>
+    </div>
+
+    <section class="comments-wrap">
+        <div class="section-head small-head">
+            <h2>Comments</h2>
+        </div>
+
+        <div class="comment-form glass-card">
+            <form method="post" class="form-grid">
+                {% csrf_token %}
+                {{ comment_form.as_p }}
+                <button type="submit" class="btn btn-primary">Add Comment</button>
+            </form>
+        </div>
+
+        {% if comments %}
+            <div class="comment-list">
+                {% for comment in comments %}
+                    <div class="comment-item glass-card">
+                        <div class="comment-top">
+                            <strong>{{ comment.user.username }}</strong>
+                            <span>{{ comment.created_at|date:"d M Y, h:i A" }}</span>
+                        </div>
+                        <p>{{ comment.content }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-box glass-card">
+                <h3>No comments yet</h3>
+                <p>Be the first one to add a comment on this task.</p>
+            </div>
+        {% endif %}
+    </section>
+</section>
+{% endblock %}
